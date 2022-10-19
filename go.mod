@@ -1,6 +1,6 @@
 module github.com/pthomison/golang-gorm-api
 
-go 1.18
+go 1.19
 
 require (
 	github.com/pthomison/dbutils v0.0.6
