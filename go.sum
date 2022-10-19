@@ -26,8 +26,8 @@ github.com/pthomison/dbutils v0.0.6 h1:fL9+kW7K7D79PspEibWeBGWocMFO7nyiLoXZMSPzy
 github.com/pthomison/dbutils v0.0.6/go.mod h1:yGfML2RPHhzH8BzwX31lGGXAqn2jlsTLfezWa4KoEPM=
 github.com/pthomison/errcheck v0.0.2 h1:+QWX+1NNQNiT9bJdz5iPPFStvdxelx2sP3Why7+bR+A=
 github.com/pthomison/errcheck v0.0.2/go.mod h1:vdRyOpyBi1XWzIJXe+8V+0/V4xPlFmlJVsIVpGxzylA=
-github.com/pthomison/gormapi v0.0.0-20221019193528-8cbf032245e9 h1:cFER0CSQnIKESpJM90yNCt0fkXPGAHjL+R73HvjnuEI=
-github.com/pthomison/gormapi v0.0.0-20221019193528-8cbf032245e9/go.mod h1:8K0x96CHz+lVqkSxND7JflxkSHvmEPMk0fqQuPJPjnU=
+github.com/pthomison/gormapi v0.0.1 h1:kCgOr8ahuFVCKaePHfsTUdpsh8Yry9J5d8PTShF11bA=
+github.com/pthomison/gormapi v0.0.1/go.mod h1:8K0x96CHz+lVqkSxND7JflxkSHvmEPMk0fqQuPJPjnU=
 github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0/go.mod h1:qqbHyh8v60DhA7CoWK5oRCqLrMHRGoxYCSS9EjAz6Eo=
 github.com/remyoudompheng/bigfft v0.0.0-20220927061507-ef77025ab5aa h1:tEkEyxYeZ43TR55QU/hsIt9aRGBxbgGuz9CGykjvogY=
 github.com/remyoudompheng/bigfft v0.0.0-20220927061507-ef77025ab5aa/go.mod h1:qqbHyh8v60DhA7CoWK5oRCqLrMHRGoxYCSS9EjAz6Eo=

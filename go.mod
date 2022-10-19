@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/pthomison/dbutils v0.0.6
 	github.com/pthomison/errcheck v0.0.2
-	github.com/pthomison/gormapi v0.0.0-20221019193528-8cbf032245e9
+	github.com/pthomison/gormapi v0.0.1
 	github.com/spf13/cobra v1.6.0
 	gorm.io/gorm v1.24.0
 )
