@@ -1,16 +1,15 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
-	"strings"
 
-	utils "github.com/pthomison/golang-utils"
+	"github.com/pthomison/dbutils"
+	"github.com/pthomison/dbutils/sqlite"
+	"github.com/pthomison/errcheck"
+	"github.com/pthomison/gormapi"
 	"github.com/spf13/cobra"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
 )
 
 var (
@@ -19,14 +18,10 @@ var (
 		Short: "golang-gorm-api",
 		Run:   run,
 	}
-
-	dbClient = &utils.DBClient{}
 )
 
 type APIObject struct {
 	gorm.Model
-
-	ID uint `json:"id,omitempty" gorm:"primaryKey"`
 
 	StringData  string  `json:"string_data,omitempty"`
 	IntegerData int     `json:"integer_data,omitempty"`
@@ -35,31 +30,29 @@ type APIObject struct {
 }
 
 func main() {
-	dbClient.RegisterFlags(rootCmd)
-
 	err := rootCmd.Execute()
-	utils.Check(err)
+	errcheck.Check(err)
 }
 
 func run(cmd *cobra.Command, args []string) {
 	fmt.Println("--- golang-gorm-api ---")
 
-	dbClient.InitializeClient(logger.Silent)
+	client := sqlite.New(":memory:")
 
-	DropAndCreateSamples()
+	DropAndCreateSamples(client)
 
-	http.HandleFunc("/", Index)
-	http.HandleFunc("/all", All)
-	http.HandleFunc("/id/", ID)
+	http.HandleFunc("/", gormapi.Index[APIObject](client))
+	http.HandleFunc("/all", gormapi.All[APIObject](client))
+	http.HandleFunc("/id/", gormapi.ID[APIObject](client))
 	http.ListenAndServe(":5050", nil)
 
 }
 
-func DropAndCreateSamples() {
-	dbClient.DB.Migrator().DropTable(&APIObject{})
-	dbClient.DB.AutoMigrate(&APIObject{})
+func DropAndCreateSamples(c dbutils.DBClient) {
+	dbutils.Migrate(c, &APIObject{})
+	dbutils.DeleteAll(c, &APIObject{})
 
-	objs := []APIObject{}
+	var objs []APIObject
 
 	for i := 0; i < 10; i++ {
 		o := APIObject{
@@ -72,46 +65,5 @@ func DropAndCreateSamples() {
 		objs = append(objs, o)
 	}
 
-	utils.Create(dbClient, objs)
-}
-
-func Index(w http.ResponseWriter, r *http.Request) {
-	objs := []APIObject{}
-
-	objs = utils.SelectAll[APIObject](dbClient, []string{"id"})
-
-	json, err := json.Marshal(objs)
-	utils.Check(err)
-
-	_, err = w.Write(json)
-	utils.Check(err)
-}
-
-func All(w http.ResponseWriter, r *http.Request) {
-	objs := []APIObject{}
-
-	objs = utils.SelectAll[APIObject](dbClient, []string{})
-
-	json, err := json.Marshal(objs)
-	utils.Check(err)
-
-	_, err = w.Write(json)
-	utils.Check(err)
-}
-
-func ID(w http.ResponseWriter, r *http.Request) {
-	id_str := strings.TrimPrefix(r.URL.Path, "/id/")
-	id, err := strconv.Atoi(id_str)
-	utils.Check(err)
-
-	fmt.Println(id)
-
-	objs := []APIObject{}
-	objs = utils.SelectWhere[APIObject](dbClient, []string{}, "id = ?", id)
-
-	json, err := json.Marshal(objs)
-	utils.Check(err)
-
-	_, err = w.Write(json)
-	utils.Check(err)
+	dbutils.Create(c, objs)
 }
